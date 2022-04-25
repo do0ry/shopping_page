@@ -1,0 +1,81 @@
+version: "3.5"
+
+services:
+  database:
+    image: 'mysql:8.0'
+    container_name: central_mysql
+    cap_add:
+      #Add the capability CAP_SYS_NICE to your
+      #container until MySQL server can
+      #handle the error itself "silently".
+        - SYS_NICE
+    ports:
+      - 23306:3306
+    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: sym
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: symfony
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    restart: unless-stopped
+    volumes:
+      - ./.docker/database/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:cached
+      - ./storage/volumes/data/database:/var/lib/mysql
+      - ./storage/volumes/logs/database:/var/log/mysql
+
+  cache:
+    image: 'redis:6.0-alpine'
+    container_name: central_redis
+    ports:
+      - 26379:6379
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: unless-stopped
+    volumes:
+      - ./.docker/cache/redis.conf:/usr/local/etc/redis/redis.conf:cached
+
+  central:
+    image: central
+    container_name: central_app
+    build:
+      context: .
+      dockerfile: .docker/central/Dockerfile
+    working_dir: /var/www/html
+    restart: unless-stopped
+    volumes:
+      - ./.docker/central/custom_php.ini:/usr/local/etc/php/conf.d/custom_php.ini:cached
+      - ./:/var/www/html
+    depends_on:
+      - database
+      - cache
+
+  worker:
+    image: worker
+    container_name: central_worker
+    build:
+      context: .
+      dockerfile: .docker/worker/Dockerfile
+    working_dir: /etc/supervisor
+    command: ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]
+    restart: unless-stopped
+    volumes:
+      - ./.docker/worker/custom_php.ini:/usr/local/etc/php/conf.d/custom_php.ini:cached
+      - ./.docker/worker/supervisord.conf:/etc/supervisord.conf:cached
+      - ./.docker/worker/queue.conf:/etc/supervisord.d/queue.conf:cached
+      - ./storage/volumes/logs/worker:/var/log/supervisor
+      - ./:/var/www/html
+    depends_on:
+      - database
+
+  server:
+    image: 'nginx:1.17-alpine'
+    container_name: central_nginx
+    ports:
+      - 280:80
+    restart: unless-stopped
+    volumes:
+      - ./.docker/server/default.conf:/etc/nginx/conf.d/default.conf:cached
+      - ./storage/volumes/logs/server:/var/log/nginx
+      - ./:/var/www/html
+    depends_on:
+      - central
