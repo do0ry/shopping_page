@@ -126,4 +126,8 @@ class User extends AuthenticatableModelBase
     public function media(){
         return $this->morphOne(Media::class,'mediable');
     }
+
+    public function chats(){
+        return $this->hasMany(Chat::class);
+    }
 }

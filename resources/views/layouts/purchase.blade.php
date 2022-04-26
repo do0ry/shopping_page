@@ -42,7 +42,7 @@
                                             {{ __('خروج') }}
                                         </button>
                                     </form>
-                                    <div class="border-l border-gray-400 px-2 text-sm">{{Auth::user()->first_name}}</div>
+                                    <a href="{{url('/dashboard')}}"><div class="border-l border-gray-400 px-2 text-sm">{{Auth::user()->first_name}}</div></a>
                                 @else
                                     <a href="{{ route('login') }}" class="flex">
                                         <div class="px-2 text-sm">ثبت نام</div>
