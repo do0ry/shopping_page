@@ -43,18 +43,34 @@
                     <div id="chat" class="w-full overflow-y-auto p-10 relative" style="height: 700px;" ref="toolbarChat">
                         <ul>
                             <li class="clearfix2">
-                                <div class="w-full flex justify-start">
-                                    <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">
-                                        <span class="block">Hello bro</span>
-                                        <span class="block text-xs text-right">10:30pm</span>
+{{--                                <div class="w-full flex justify-start">--}}
+{{--                                    <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">--}}
+{{--                                        <span class="block">Hello bro</span>--}}
+{{--                                        <span class="block text-xs text-right">10:30pm</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                <div class="w-full flex justify-end">--}}
+{{--                                    <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">--}}
+{{--                                        <span class="block">Hello</span>--}}
+{{--                                        <span class="block text-xs text-left">10:32pm</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+                                @foreach($sentMassages as $sentMassage)
+                                    <div class="w-full flex justify-start">
+                                        <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">
+                                            <span class="block">{{$sentMassage->massage}}</span>
+                                            <span class="block text-xs text-right">{{$sentMassage->created_at}}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="w-full flex justify-end">
-                                    <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">
-                                        <span class="block">Hello</span>
-                                        <span class="block text-xs text-left">10:32pm</span>
+                                @endforeach
+                                @foreach($receivedMassages as $receivedMassage)
+                                    <div class="w-full flex justify-end">
+                                        <div class="bg-gray-100 rounded px-5 py-2 my-2 text-gray-700 relative" style="max-width: 300px;">
+                                            <span class="block">{{$receivedMassage->massage}}</span>
+                                            <span class="block text-xs text-left">{{$sentMassage->created_at}}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </li>
                         </ul>
                     </div>

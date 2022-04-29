@@ -20,7 +20,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $value)
     {
         $cart = $this->cartService->getFromCookie();
         $clothes = Http::get('https://fakestoreapi.com/products')
