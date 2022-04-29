@@ -76,13 +76,10 @@
                         <img src="{{asset('media/symbol-pure-negative.svg')}}" class="w-10 h-10 ml-4" alt="My Happy SVG" />
                     </div>
                     <div class="">
-                        <ul class="flex mt-8 relative mr-10">
+                        <ul class="flex justify-end mt-8 relative mr-10">
                             <a href="/"><li class="hover:text-gray-400 ml-3">دستهبندی کالاها</li></a>
                             <li class="hover:text-gray-400 ml-3">پرفروش ترین ها</li>
                             <li class="hover:text-gray-400 ml-3">تخفیف ها</li>
-                            <li class="hover:text-gray-400 ml-3">شگفت انگیزها</li>
-                            <li class="hover:text-gray-400 ml-3">سوالی دارید؟</li>
-                            <li class="hover:text-gray-400 ml-3">فروشنده شوید</li>
                         </ul>
                     </div>
                 </div>
