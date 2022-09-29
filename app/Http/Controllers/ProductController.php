@@ -23,10 +23,10 @@ class ProductController extends Controller
     public function index(Request $value)
     {
         $cart = $this->cartService->getFromCookie();
-        $clothes = Http::get('https://fakestoreapi.com/products')
-        ->json();
+//        $clothes = Http::get('https://fakestoreapi.com/products')
+//        ->json();
         return view('products.index',[
-            'clothes' => $clothes,
+//            'clothes' => $clothes,
             'cart'=>$cart,
         ]);
     }
