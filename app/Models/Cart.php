@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use phpDocumentor\Reflection\Types\Parent_;
 use Platform\Exceptions\CartDoesNotExist;
 
 class Cart extends Model
@@ -41,7 +40,7 @@ class Cart extends Model
     {
         $cart = static::whereId($id)->get();
 
-        if (! $cart) {
+        if (!$cart) {
             throw CartDoesNotExist::withId($id);
         }
 
@@ -51,17 +50,4 @@ class Cart extends Model
     public function getTotalPriceAttribute(){
         return $this->products()->get()->pluck('totalPrice')->sum();
     }
-
-    public static function saveData(){
-        $order = new Order();
-        return Order::create();
-    }
-
-    public static function boot(){
-        parent::boot();
-        static::deleting(function(){
-            return 'lolo';
-        });
-    }
-
 }
